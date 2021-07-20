@@ -30,12 +30,32 @@ JOIN "addresses" ON "customers".id = "addresses".customer_id
 JOIN "orders" ON "orders".address_id = "addresses".id
 GROUP BY "customers_order";
 
+-- Steve's approach. Looks 
+SELECT count(*), "customers".first_name, "customers".last_name
+FROM "orders"
+JOIN "addresses" ON "orders".address_id = "addresses".id
+JOIN "customers" ON "customers".id = "addresses".customer_id
+GROUP BY "customers".id; --This one runs well because the names are
+--in seperate colums.
 
 6. How many customers do we have?
+SELECT count(*)
+FROM "customers";
+
 7. How many products do we carry?
+SELECT count(*)
+FROM "products";
+
 8. What is the total available on-hand quantity of diet pepsi?
+SELECT sum(warehouse_product.on_hand), "products".description
+FROM warehouse_product
+JOIN products on products.id = warehouse_product.product_id
+where products.description = 'diet pepsi'
+GROUP BY "products".description;
 
 ## Stretch
 9. How much was the total cost for each order?
+
+
 10. How much has each customer spent in total?
 11. How much has each customer spent in total? Customers who have spent $0 should still show up in the table. It should say 0, not NULL (research coalesce).
